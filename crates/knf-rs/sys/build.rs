@@ -46,7 +46,10 @@ fn main() {
         .map(|v| v == "1")
         .unwrap_or(false);
 
-    let profile = if cfg!(debug_assertions) { "Debug" } else { "Release" };
+    let profile = match std::env::var("OPT_LEVEL").as_deref() {
+        Ok("0") => "Debug",
+        _ => "Release",
+    };
 
     debug_log!("TARGET: {}", target);
     debug_log!("CARGO_MANIFEST_DIR: {}", manifest_dir);
